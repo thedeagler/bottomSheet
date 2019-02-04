@@ -22,11 +22,20 @@ class ViewController: UIViewController {
         static let cell = "hello"
     }
 
+    let bottomSheetTransitioningDelegate = BottomSheetTransitionDelegate()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseId.cell)
         tableView.dataSource = self
         tableView.delegate = self
+    }
+
+    @IBAction func showBottomSheet(_ sender: UIBarButtonItem) {
+        let vc = DopeViewController()
+        vc.transitioningDelegate = bottomSheetTransitioningDelegate
+        vc.modalPresentationStyle = .custom
+        present(vc, animated: true)
     }
 }
 
