@@ -9,6 +9,7 @@
 import UIKit
 
 class BottomSheetPresentationController: UIPresentationController {
+    var touchForwardingView: TouchForwardingView!
 
     override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return .zero }
@@ -26,7 +27,9 @@ class BottomSheetPresentationController: UIPresentationController {
 
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
-        // insert touch forwarding view at the back to intercept background touches
+        touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
+        touchForwardingView.destinationView = presentingViewController.view
+        containerView?.insertSubview(touchForwardingView, at: 0)
     }
 
     // Responds to size changes
