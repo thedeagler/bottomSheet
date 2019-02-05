@@ -44,6 +44,7 @@ class BottomSheetViewController: UIViewController {
         addChild(rootViewController)
         rootViewController.didMove(toParent: self)
         containerView.addSubview(rootViewController.view)
+        containerView.backgroundColor = rootViewController.view.backgroundColor
 
         containerView.layer.cornerRadius = 8
         handleView.layer.cornerRadius = 2
