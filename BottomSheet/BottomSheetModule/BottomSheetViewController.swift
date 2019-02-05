@@ -15,6 +15,9 @@ class BottomSheetViewController: UIViewController {
     private let outsideTouchMode: BottomSheetOutsideTouchMode
     private let bottomSheetTransitioningDelegate: BottomSheetTransitionDelegate
 
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var handleView: UIView!
+
     init(rootViewController: UIViewController, outsideTouchMode: BottomSheetOutsideTouchMode) {
         self.rootViewController = rootViewController
         self.outsideTouchMode = outsideTouchMode
@@ -24,6 +27,7 @@ class BottomSheetViewController: UIViewController {
 
         transitioningDelegate = bottomSheetTransitioningDelegate
         modalPresentationStyle = .custom
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,8 +36,22 @@ class BottomSheetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+    }
+
+
+    private func setupViews() {
         addChild(rootViewController)
         rootViewController.didMove(toParent: self)
-        view.addSubview(rootViewController.view)
+        containerView.addSubview(rootViewController.view)
+
+        containerView.layer.cornerRadius = 8
+        handleView.layer.cornerRadius = 2
+
+        rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 16).isActive = true
+        rootViewController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        rootViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
 }
