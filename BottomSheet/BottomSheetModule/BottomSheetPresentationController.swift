@@ -8,8 +8,24 @@
 
 import UIKit
 
+/// Enumerates the different ways to handle touches in the background of the bottom sheet.
+enum BottomSheetOutsideTouchMode {
+    /// Do nothing
+    case none
+    /// Dismiss the bottom sheet
+    case dismiss(animated: Bool)
+    /// Allow interactions with the presenting view controller in the empty space behind the half sheet
+    case interact
+}
+
 class BottomSheetPresentationController: UIPresentationController {
-    var touchForwardingView: TouchForwardingView!
+    private let outsideTouchMode: BottomSheetOutsideTouchMode
+    private var touchForwardingView: TouchForwardingView!
+
+    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, outsideTouchMode: BottomSheetOutsideTouchMode) {
+        self.outsideTouchMode = outsideTouchMode
+        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+    }
 
     override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return .zero }
@@ -27,9 +43,40 @@ class BottomSheetPresentationController: UIPresentationController {
 
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
-        touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
-        touchForwardingView.destinationView = presentingViewController.view
-        containerView?.insertSubview(touchForwardingView, at: 0)
+        switch outsideTouchMode {
+        case .interact:
+            touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
+            touchForwardingView.destinationView = presentingViewController.view
+            containerView?.insertSubview(touchForwardingView, at: 0)
+
+        case .dismiss(let animated):
+            let view = UIView(frame: containerView!.bounds)
+            let selector = animated ? #selector(dismissPresentedViewControllerWithAnimation) : #selector(dismissPresentedViewControllerWithoutAnimation)
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: selector)
+            view.addGestureRecognizer(tapRecognizer)
+            containerView?.insertSubview(view, at: 0)
+
+        default:
+            break
+        }
+    }
+
+    @objc
+    private func dismissPresentedViewControllerWithAnimation() {
+        presentingViewController.dismiss(animated: true, completion: nil)
+    }
+
+    @objc
+    private func dismissPresentedViewControllerWithoutAnimation() {
+        presentingViewController.dismiss(animated: false, completion: nil)
+    }
+
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
+        guard completed else { return }
+
+        containerView?.subviews.forEach {
+            $0.removeFromSuperview()
+        }
     }
 
     // Responds to size changes

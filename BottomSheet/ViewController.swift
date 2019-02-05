@@ -22,8 +22,6 @@ class ViewController: UIViewController {
         static let cell = "hello"
     }
 
-    let bottomSheetTransitioningDelegate = BottomSheetTransitionDelegate()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseId.cell)
@@ -33,9 +31,8 @@ class ViewController: UIViewController {
 
     @IBAction func showBottomSheet(_ sender: UIBarButtonItem) {
         let vc = DopeViewController()
-        vc.transitioningDelegate = bottomSheetTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-        present(vc, animated: true)
+        let bottomSheet = BottomSheetViewController(rootViewController: vc, outsideTouchMode: .interact)
+        present(bottomSheet, animated: true)
     }
 }
 

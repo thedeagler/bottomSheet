@@ -11,7 +11,7 @@ import UIKit
 /// Presentation animator
 class BottomSheetPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 0.33
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -35,7 +35,7 @@ class BottomSheetPresentationAnimator: NSObject, UIViewControllerAnimatedTransit
 /// Dismissal animator
 class BottomSheetDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 0.33
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

@@ -8,10 +8,17 @@
 
 import UIKit
 
+
+
 class BottomSheetTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
+    private let outsideTouchMode: BottomSheetOutsideTouchMode
+
+    init(outsideTouchMode: BottomSheetOutsideTouchMode = .none) {
+        self.outsideTouchMode = outsideTouchMode
+    }
 
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return BottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
+        return BottomSheetPresentationController(presentedViewController: presented, presenting: presenting, outsideTouchMode: outsideTouchMode)
     }
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
