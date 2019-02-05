@@ -27,7 +27,6 @@ class BottomSheetViewController: UIViewController {
 
         transitioningDelegate = bottomSheetTransitioningDelegate
         modalPresentationStyle = .custom
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -36,9 +35,38 @@ class BottomSheetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGestures()
         setupViews()
     }
 
+    private var initialFrame: CGRect!
+
+    @objc
+    func handlePan(_ recognizer: UIPanGestureRecognizer) {
+        let dY = recognizer.translation(in: view).y
+
+        switch recognizer.state {
+        case .began:
+            initialFrame = containerView.frame
+
+        case .changed:
+            containerView.frame = CGRect(x: initialFrame.minX,
+                                         y: initialFrame.minY + dY,
+                                         width: initialFrame.width,
+                                         height: initialFrame.height - dY)
+            // somehow change height of view controller
+
+        default:
+            break
+        }
+    }
+
+    private func setupGestures() {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        panGesture.maximumNumberOfTouches = 1
+        panGesture.minimumNumberOfTouches = 1
+        containerView.addGestureRecognizer(panGesture)
+    }
 
     private func setupViews() {
         addChild(rootViewController)
@@ -51,7 +79,7 @@ class BottomSheetViewController: UIViewController {
 
         rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 16).isActive = true
+        rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
         rootViewController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         rootViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }

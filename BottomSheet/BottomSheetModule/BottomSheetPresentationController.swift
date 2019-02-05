@@ -82,6 +82,7 @@ class BottomSheetPresentationController: UIPresentationController {
     // Responds to size changes
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // do stuff
+        print("transitioning")
     }
 
 }
