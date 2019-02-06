@@ -27,20 +27,6 @@ class BottomSheetPresentationController: UIPresentationController {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
 
-    override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return .zero }
-        let height: CGFloat = 500
-
-        return CGRect(x: 0,
-                      y: containerView.bounds.height - height,
-                      width: containerView.bounds.width,
-                      height: height)
-    }
-
-    override func containerViewWillLayoutSubviews() {
-        presentedView?.frame = frameOfPresentedViewInContainerView
-    }
-
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         switch outsideTouchMode {
