@@ -12,8 +12,8 @@ class BottomSheetViewController: UIViewController {
 
     let rootViewController: UIViewController
 
-    let fullscreenHeight: CGFloat = UIScreen.main.bounds.height - 100
-    let preferredHeight: CGFloat = 450
+    let fullScreenMinY: CGFloat = 100
+    let preferredMinY: CGFloat = UIScreen.main.bounds.height - 250
 
     private let outsideTouchMode: BottomSheetOutsideTouchMode
     private let bottomSheetTransitioningDelegate: BottomSheetTransitionDelegate
@@ -57,15 +57,16 @@ class BottomSheetViewController: UIViewController {
                                 y: initialFrame.minY + dY,
                                 width: initialFrame.width,
                                 height: initialFrame.height - dY)
+            // somehow change height of view controller because the gesture recognizer target doesn't resize. maybe resize on ended?
 
         default:
-            snap(containerView, to: [fullscreenHeight, preferredHeight], with: recognizer.velocity(in: view).y)
+            snap(containerView, to: [fullScreenMinY, preferredMinY], with: recognizer.velocity(in: view).y)
         }
     }
 
     let thresholdSpeed: CGFloat = 150
 
-    func snap(_ view: UIView, to heights: [CGFloat], with velocity: CGFloat, onSnapToBottom: (() -> Void)? = nil) {
+    func snap(_ view: UIView, to notches: [CGFloat], with velocity: CGFloat, onSnapToBottom: (() -> Void)? = nil) {
 //        let yBottom = view.frame.maxY
 //        let yPos = view.frame.minY
 //        var positions = [yBottom]
@@ -116,13 +117,14 @@ class BottomSheetViewController: UIViewController {
         handleView.layer.cornerRadius = 2
 
         rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
         rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
         rootViewController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         rootViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
 
-        view.frame = CGRect(x: 0,
-                            y: UIScreen.main.bounds.height - preferredHeight,
+        view.frame = CGRect(x: view.frame.minX,
+                            y: preferredMinY,
                             width: view.frame.width,
-                            height: preferredHeight)
+                            height: UIScreen.main.bounds.height - preferredMinY)
     }
 }
