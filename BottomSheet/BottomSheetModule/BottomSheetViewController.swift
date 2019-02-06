@@ -12,8 +12,12 @@ class BottomSheetViewController: UIViewController {
 
     let rootViewController: UIViewController
 
-    let fullScreenMinY: CGFloat = 100
-    let preferredMinY: CGFloat = UIScreen.main.bounds.height - 250
+    let fullMinY: CGFloat = 100
+    let compactMinY: CGFloat = UIScreen.main.bounds.height - 250
+
+    var viewHeight: CGFloat {
+        return UIScreen.main.bounds.height - fullMinY
+    }
 
     private let outsideTouchMode: BottomSheetOutsideTouchMode
     private let bottomSheetTransitioningDelegate: BottomSheetTransitionDelegate
@@ -46,58 +50,56 @@ class BottomSheetViewController: UIViewController {
 
     @objc
     func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        let dY = recognizer.translation(in: view).y
-
         switch recognizer.state {
         case .began:
             initialFrame = view.frame
 
         case .changed:
             view.frame = CGRect(x: initialFrame.minX,
-                                y: initialFrame.minY + dY,
+                                y: max(initialFrame.minY + recognizer.translation(in: view).y, fullMinY),
                                 width: initialFrame.width,
-                                height: initialFrame.height - dY)
-            // somehow change height of view controller because the gesture recognizer target doesn't resize. maybe resize on ended?
+                                height: viewHeight)
 
         default:
-            snap(containerView, to: [fullScreenMinY, preferredMinY], with: recognizer.velocity(in: view).y)
+            snap(view, to: [fullMinY, compactMinY], with: recognizer.velocity(in: view).y)
         }
     }
 
     let thresholdSpeed: CGFloat = 150
 
     func snap(_ view: UIView, to notches: [CGFloat], with velocity: CGFloat, onSnapToBottom: (() -> Void)? = nil) {
-//        let yBottom = view.frame.maxY
-//        let yPos = view.frame.minY
-//        var positions = [yBottom]
-//        positions.append(contentsOf: notches)
-//        positions = positions.sorted()
-//
-//        let indexOfNextNeighbor = positions.firstIndex { $0 > yPos } ?? (positions.count - 1)
-//        let indexOfPreviousNeighbor = max(indexOfNextNeighbor - 1, 0)
-//
-//        let indexOfNewPosition: Int
-//        if abs(velocity) > thresholdSpeed {
-//            indexOfNewPosition = velocity > 0 ? indexOfNextNeighbor : indexOfPreviousNeighbor
-//        } else {
-//            let prevNeighborDX = abs(yPos - positions[indexOfPreviousNeighbor])
-//            let nextNeighborDX = abs(yPos - positions[indexOfNextNeighbor])
-//
-//            indexOfNewPosition = prevNeighborDX < nextNeighborDX ? indexOfPreviousNeighbor : indexOfNextNeighbor
-//        }
-//
-//        let newYPos = positions[indexOfNewPosition]
-//        let dHeight = newYPos - yPos
-//        UIView.animate(withDuration: 0.2, animations: {
-//            view.bounds = CGRect(x: view.bounds.minX,
-//                                y: newYPos,
-//                                width: view.bounds.width,
-//                                height: view.bounds.height + dHeight)
-//        }) { _ in
-//            if newYPos == yBottom {
-//                self.presentingViewController?.dismiss(animated: false, completion: nil)
-//            }
-//        }
+        let yBottom = view.frame.maxY
+        let yPos = view.frame.minY
+        var positions = [yBottom]
+        positions.append(contentsOf: notches)
+        positions = positions.sorted()
+
+        let indexOfNextNeighbor = positions.firstIndex { $0 > yPos } ?? (positions.count - 1)
+        let indexOfPreviousNeighbor = max(indexOfNextNeighbor - 1, 0)
+
+        let indexOfNewPosition: Int
+        if abs(velocity) > thresholdSpeed {
+            indexOfNewPosition = velocity > 0 ? indexOfNextNeighbor : indexOfPreviousNeighbor
+        } else {
+            let prevNeighborDX = abs(yPos - positions[indexOfPreviousNeighbor])
+            let nextNeighborDX = abs(yPos - positions[indexOfNextNeighbor])
+
+            indexOfNewPosition = prevNeighborDX < nextNeighborDX ? indexOfPreviousNeighbor : indexOfNextNeighbor
+        }
+
+        let newYPos = positions[indexOfNewPosition]
+        let newFrame = CGRect(x: view.frame.minX,
+                              y: newYPos,
+                              width: view.frame.width,
+                              height: viewHeight)
+
+        UIView.animate(withDuration: 0.1, animations: {
+            view.frame = newFrame
+        }) { _ in
+            if newYPos == yBottom {
+                self.presentingViewController?.dismiss(animated: false, completion: nil)
+            }
+        }
     }
 
     private func setupGestures() {
@@ -123,8 +125,8 @@ class BottomSheetViewController: UIViewController {
         rootViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
 
         view.frame = CGRect(x: view.frame.minX,
-                            y: preferredMinY,
+                            y: compactMinY,
                             width: view.frame.width,
-                            height: UIScreen.main.bounds.height - preferredMinY)
+                            height: viewHeight)
     }
 }
