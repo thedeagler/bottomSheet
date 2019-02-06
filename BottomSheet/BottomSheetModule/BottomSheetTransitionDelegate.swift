@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class BottomSheetTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
     private let outsideTouchMode: BottomSheetOutsideTouchMode
 

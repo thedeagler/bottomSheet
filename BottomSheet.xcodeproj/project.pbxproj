@@ -70,6 +70,7 @@
 		DC4FD55C2208D11C00D2757D /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				DC5B365A220B87B4005E4002 /* Example View Controllers */,
 				DC4FD56F2208D6DC00D2757D /* BottomSheetModule */,
 				DC4FD55D2208D11C00D2757D /* AppDelegate.swift */,
 				DC4FD55F2208D11C00D2757D /* ViewController.swift */,
@@ -78,8 +79,6 @@
 				DC4FD5642208D11F00D2757D /* Assets.xcassets */,
 				DC4FD5662208D11F00D2757D /* LaunchScreen.storyboard */,
 				DC4FD5692208D11F00D2757D /* Info.plist */,
-				DC4FD5782208E0DC00D2757D /* DopeViewController.swift */,
-				DC4FD5792208E0DC00D2757D /* DopeViewController.xib */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -94,6 +93,15 @@
 				DC4FD57C2208E1BD00D2757D /* BottomSheetTransitionDelegate.swift */,
 			);
 			path = BottomSheetModule;
+			sourceTree = "<group>";
+		};
+		DC5B365A220B87B4005E4002 /* Example View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DC4FD5782208E0DC00D2757D /* DopeViewController.swift */,
+				DC4FD5792208E0DC00D2757D /* DopeViewController.xib */,
+			);
+			path = "Example View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

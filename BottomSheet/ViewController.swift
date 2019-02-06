@@ -31,7 +31,8 @@ class ViewController: UIViewController {
 
     @IBAction func showBottomSheet(_ sender: UIBarButtonItem) {
         let vc = DopeViewController()
-        let bottomSheet = BottomSheetViewController(rootViewController: vc, outsideTouchMode: .dismiss(animated: true))
+        let nav = UINavigationController(rootViewController: vc)
+        let bottomSheet = BottomSheetViewController(rootViewController: nav, outsideTouchMode: .dismiss(animated: true))
         present(bottomSheet, animated: true)
     }
 }

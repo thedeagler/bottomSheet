@@ -93,7 +93,7 @@ class BottomSheetViewController: UIViewController {
                               width: view.frame.width,
                               height: viewHeight)
 
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             view.frame = newFrame
         }) { _ in
             if newYPos == yBottom {
