@@ -20,6 +20,8 @@
 		DC4FD57B2208E0DC00D2757D /* DopeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4FD5792208E0DC00D2757D /* DopeViewController.xib */; };
 		DC4FD57D2208E1BD00D2757D /* BottomSheetTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4FD57C2208E1BD00D2757D /* BottomSheetTransitionDelegate.swift */; };
 		DC4FD57F2208E91000D2757D /* TouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4FD57E2208E91000D2757D /* TouchForwardingView.swift */; };
+		DC5B365D220B87E6005E4002 /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5B365B220B87E6005E4002 /* ExampleTableViewController.swift */; };
+		DC5B365E220B87E6005E4002 /* ExampleTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5B365C220B87E6005E4002 /* ExampleTableViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		DC4FD5792208E0DC00D2757D /* DopeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DopeViewController.xib; sourceTree = "<group>"; };
 		DC4FD57C2208E1BD00D2757D /* BottomSheetTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitionDelegate.swift; sourceTree = "<group>"; };
 		DC4FD57E2208E91000D2757D /* TouchForwardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchForwardingView.swift; sourceTree = "<group>"; };
+		DC5B365B220B87E6005E4002 /* ExampleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
+		DC5B365C220B87E6005E4002 /* ExampleTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExampleTableViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 			children = (
 				DC4FD5782208E0DC00D2757D /* DopeViewController.swift */,
 				DC4FD5792208E0DC00D2757D /* DopeViewController.xib */,
+				DC5B365B220B87E6005E4002 /* ExampleTableViewController.swift */,
+				DC5B365C220B87E6005E4002 /* ExampleTableViewController.xib */,
 			);
 			path = "Example View Controllers";
 			sourceTree = "<group>";
@@ -162,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC5B365E220B87E6005E4002 /* ExampleTableViewController.xib in Resources */,
 				DC4FD5682208D11F00D2757D /* LaunchScreen.storyboard in Resources */,
 				DC4FD57B2208E0DC00D2757D /* DopeViewController.xib in Resources */,
 				DC4FD5652208D11F00D2757D /* Assets.xcassets in Resources */,
@@ -183,6 +190,7 @@
 				DC4FD55E2208D11C00D2757D /* AppDelegate.swift in Sources */,
 				DC4FD5752208DB0800D2757D /* BottomSheetAnimator.swift in Sources */,
 				DC4FD57F2208E91000D2757D /* TouchForwardingView.swift in Sources */,
+				DC5B365D220B87E6005E4002 /* ExampleTableViewController.swift in Sources */,
 				DC4FD57A2208E0DC00D2757D /* DopeViewController.swift in Sources */,
 				DC4FD5772208DE3300D2757D /* BottomSheetPresentationController.swift in Sources */,
 			);

@@ -17,9 +17,16 @@ class DopeViewController: UIViewController {
         navigationItem.title = "Title"
     }
 
+    @IBAction func listButtonAction(_ sender: Any) {
+        let newVC = ExampleTableViewController()
+        newVC.title = "List"
+        newVC.view.backgroundColor = .white
+        navigationController?.pushViewController(newVC, animated: true)
+    }
+
     @IBAction func pushButtonAction(_ sender: UIButton) {
         let newVC = UIViewController()
-        newVC.title = "Next"
+        newVC.title = "Plain"
         newVC.view.backgroundColor = .white
         navigationController?.pushViewController(newVC, animated: true)
     }

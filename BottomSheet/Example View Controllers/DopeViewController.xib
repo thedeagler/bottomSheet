@@ -28,19 +28,28 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gGz-ak-2m7">
-                    <rect key="frame" x="159" y="40" width="35" height="30"/>
-                    <state key="normal" title="Push"/>
+                    <rect key="frame" x="99" y="40" width="33" height="30"/>
+                    <state key="normal" title="Plain"/>
                     <connections>
                         <action selector="pushButtonAction:" destination="-1" eventType="touchUpInside" id="2Hh-d2-iKL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1T-eB-cng">
+                    <rect key="frame" x="172" y="40" width="30" height="30"/>
+                    <state key="normal" title="List"/>
+                    <connections>
+                        <action selector="listButtonAction:" destination="-1" eventType="touchUpInside" id="lqx-9b-4b7"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.87843137250000003" green="0.96078431369999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="gGz-ak-2m7" firstAttribute="leading" secondItem="rfK-MZ-odG" secondAttribute="trailing" constant="100" id="5ji-VX-BB3"/>
+                <constraint firstItem="gGz-ak-2m7" firstAttribute="leading" secondItem="rfK-MZ-odG" secondAttribute="trailing" constant="40" id="5ji-VX-BB3"/>
+                <constraint firstItem="n1T-eB-cng" firstAttribute="leading" secondItem="gGz-ak-2m7" secondAttribute="trailing" constant="40" id="8DZ-PI-Olh"/>
                 <constraint firstItem="rfK-MZ-odG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="RLH-bF-PhC"/>
                 <constraint firstItem="rfK-MZ-odG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="lPd-st-exT"/>
                 <constraint firstItem="gGz-ak-2m7" firstAttribute="centerY" secondItem="rfK-MZ-odG" secondAttribute="centerY" id="rT3-hP-Z88"/>
+                <constraint firstItem="gGz-ak-2m7" firstAttribute="centerY" secondItem="n1T-eB-cng" secondAttribute="centerY" id="xqN-Op-YDp"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
