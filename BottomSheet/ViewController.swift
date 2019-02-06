@@ -14,7 +14,21 @@ class ViewController: UIViewController {
 
     var data: [String] = {
         return (0..<100).map({
-            return "cell #\($0)"
+            switch $0 {
+            case 0:
+                return "Background dismiss with animation"
+            case 1:
+                return "Background dismiss without animation"
+            case 2:
+                return "Background interactive"
+            case 3:
+                return "Background not interactive"
+            case 4:
+                return "Without nav"
+
+            default:
+                return "nothing #\($0)"
+            }
         })
     }()
 
@@ -46,6 +60,43 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReuseId.cell)!
         cell.textLabel?.text = data[indexPath.row]
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let touchMode: BottomSheetOutsideTouchMode
+        let vc: UIViewController
+
+        switch indexPath.row {
+        case 0:
+            let dvc = DopeViewController()
+            vc = UINavigationController(rootViewController: dvc)
+            touchMode = .dismiss(animated: true)
+
+        case 1:
+            let dvc = DopeViewController()
+            vc = UINavigationController(rootViewController: dvc)
+            touchMode = .dismiss(animated: false)
+
+        case 2:
+            let dvc = DopeViewController()
+            vc = UINavigationController(rootViewController: dvc)
+            touchMode = .interact
+
+        case 3:
+            let dvc = DopeViewController()
+            vc = UINavigationController(rootViewController: dvc)
+            touchMode = .none
+
+        case 4:
+            vc = DopeViewController()
+            touchMode = .dismiss(animated: true)
+
+        default:
+            return
+        }
+
+        let bottomSheet = BottomSheetViewController(rootViewController: vc, outsideTouchMode: touchMode)
+        present(bottomSheet, animated: true)
     }
 }
 

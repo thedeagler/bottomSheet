@@ -106,6 +106,7 @@ class BottomSheetViewController: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         panGesture.maximumNumberOfTouches = 1
         panGesture.minimumNumberOfTouches = 1
+        panGesture.delegate = self
         containerView.addGestureRecognizer(panGesture)
     }
 
@@ -141,4 +142,29 @@ class BottomSheetViewController: UIViewController {
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = UIScreen.main.scale
     }
+}
+
+extension BottomSheetViewController: UIGestureRecognizerDelegate {
+
+    // Solution
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
+        let direction = gesture.velocity(in: view).y
+
+        let y = view.frame.minY
+//        if (y == fullView && tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
+//            tableView.isScrollEnabled = false
+//        } else {
+//            tableView.isScrollEnabled = true
+//        }
+
+        if y == fullMinY {
+
+        } else {
+
+        }
+
+        return true
+    }
+
 }
