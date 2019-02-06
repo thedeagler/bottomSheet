@@ -20,30 +20,69 @@ enum BottomSheetOutsideTouchMode {
 
 class BottomSheetPresentationController: UIPresentationController {
     private let outsideTouchMode: BottomSheetOutsideTouchMode
-    private var touchForwardingView: TouchForwardingView!
+    private var dimmingView: UIView?
 
     init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, outsideTouchMode: BottomSheetOutsideTouchMode) {
         self.outsideTouchMode = outsideTouchMode
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
 
+    func makeDimmingView(animated: Bool) -> UIView {
+        let view = UIView(frame: containerView!.bounds)
+        view.backgroundColor = UIColor.black
+        view.alpha = 0
+        let selector = animated ? #selector(dismissPresentedViewControllerWithAnimation) : #selector(dismissPresentedViewControllerWithoutAnimation)
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: selector)
+        view.addGestureRecognizer(tapRecognizer)
+
+        return view
+    }
+
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         switch outsideTouchMode {
         case .interact:
-            touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
+            let touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
             touchForwardingView.destinationView = presentingViewController.view
             containerView?.insertSubview(touchForwardingView, at: 0)
 
         case .dismiss(let animated):
-            let view = UIView(frame: containerView!.bounds)
-            let selector = animated ? #selector(dismissPresentedViewControllerWithAnimation) : #selector(dismissPresentedViewControllerWithoutAnimation)
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: selector)
-            view.addGestureRecognizer(tapRecognizer)
+            let view = makeDimmingView(animated: animated)
+            dimmingView = view
             containerView?.insertSubview(view, at: 0)
+
+            guard let coordinator = presentedViewController.transitionCoordinator else {
+                view.alpha = 0.5
+                return
+            }
+
+            coordinator.animate(alongsideTransition: { _ in
+                view.alpha = 0.5
+            }, completion: nil)
 
         default:
             break
+        }
+    }
+
+    override func dismissalTransitionWillBegin() {
+        guard let view = dimmingView else { return }
+
+        guard let coordinator = presentedViewController.transitionCoordinator else {
+            view.alpha = 0
+            return
+        }
+
+        coordinator.animate(alongsideTransition: { _ in
+            view.alpha = 0
+        }, completion: nil)
+    }
+
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
+        guard completed else { return }
+
+        containerView?.subviews.forEach {
+            $0.removeFromSuperview()
         }
     }
 
@@ -56,19 +95,4 @@ class BottomSheetPresentationController: UIPresentationController {
     private func dismissPresentedViewControllerWithoutAnimation() {
         presentingViewController.dismiss(animated: false, completion: nil)
     }
-
-    override func dismissalTransitionDidEnd(_ completed: Bool) {
-        guard completed else { return }
-
-        containerView?.subviews.forEach {
-            $0.removeFromSuperview()
-        }
-    }
-
-    // Responds to size changes
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        // do stuff
-        print("transitioning")
-    }
-
 }

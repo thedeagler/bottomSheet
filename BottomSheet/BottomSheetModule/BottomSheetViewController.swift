@@ -12,7 +12,7 @@ class BottomSheetViewController: UIViewController {
 
     let rootViewController: UIViewController
 
-    let fullMinY: CGFloat = 100
+    let fullMinY: CGFloat = 20
     let compactMinY: CGFloat = UIScreen.main.bounds.height - 250
 
     var viewHeight: CGFloat {
@@ -115,7 +115,7 @@ class BottomSheetViewController: UIViewController {
         containerView.addSubview(rootViewController.view)
         containerView.backgroundColor = rootViewController.view.backgroundColor
 
-        containerView.layer.cornerRadius = 8
+        containerView.layer.cornerRadius = 12
         handleView.layer.cornerRadius = 2
 
         rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -128,5 +128,17 @@ class BottomSheetViewController: UIViewController {
                             y: compactMinY,
                             width: view.frame.width,
                             height: viewHeight)
+
+        addShadow(to: containerView)
+    }
+
+    func addShadow(to view: UIView) {
+        view.layer.masksToBounds = false
+        view.layer.shadowColor = UIColor.lightGray.cgColor
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 4
+        view.layer.shouldRasterize = true
+        view.layer.rasterizationScale = UIScreen.main.scale
     }
 }

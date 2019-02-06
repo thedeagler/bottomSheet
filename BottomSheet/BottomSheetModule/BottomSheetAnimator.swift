@@ -10,8 +10,10 @@ import UIKit
 
 /// Presentation animator
 class BottomSheetPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    static let animationDuration: TimeInterval = 0.33
+
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.33
+        return BottomSheetPresentationAnimator.animationDuration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -34,8 +36,10 @@ class BottomSheetPresentationAnimator: NSObject, UIViewControllerAnimatedTransit
 
 /// Dismissal animator
 class BottomSheetDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    static let animationDuration: TimeInterval = 0.33
+
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.33
+        return BottomSheetDismissalAnimator.animationDuration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
