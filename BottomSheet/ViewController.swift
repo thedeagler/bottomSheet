@@ -8,26 +8,38 @@
 
 import UIKit
 
+struct CellData {
+    let title: String
+    let description: String?
+
+    init(_ title: String, description: String? = nil) {
+        self.title = title
+        self.description = description
+    }
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    var data: [String] = {
+    var data: [CellData] = {
         return (0..<100).map({
             switch $0 {
             case 0:
-                return "Background dismiss with animation"
+                return CellData("Dismiss on background tap with animation",
+                                description: "Background is dimmed, and will dismiss the bottom sheet when tapped with an animation which fades out the background and translates the card down and off screen.")
             case 1:
-                return "Background dismiss without animation"
+                return CellData("Dismiss on background tap without animation",
+                                description: "Background is dimmed, and will instantly disappear along with the bottom sheet when tapped.")
             case 2:
-                return "Background interactive"
+                return CellData("Interactive background",
+                                description: "The view behind the bottom sheet remains interactable.")
             case 3:
-                return "Background not interactive"
-            case 4:
-                return "Without nav"
+                return CellData("No interaction on background touches",
+                                description: "The background is not interactable, and taps will not dismiss the bottom sheet.")
 
             default:
-                return "nothing #\($0)"
+                return CellData("Extra cell #\($0)")
             }
         })
     }()
@@ -38,7 +50,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseId.cell)
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -57,8 +68,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ReuseId.cell)!
-        cell.textLabel?.text = data[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: ReuseId.cell) ?? UITableViewCell(style: .subtitle, reuseIdentifier: ReuseId.cell)
+        cell.textLabel?.text = data[indexPath.row].title
+        cell.detailTextLabel?.text = data[indexPath.row].description
+        cell.detailTextLabel?.numberOfLines = 0
+
+        if indexPath.row < 4 {
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            cell.isUserInteractionEnabled = false
+        }
+
         return cell
     }
 
@@ -87,13 +107,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             vc = UINavigationController(rootViewController: dvc)
             touchMode = .none
 
-        case 4:
-            vc = DopeViewController()
-            touchMode = .dismiss(animated: true)
-
         default:
             return
         }
+
+        tableView.deselectRow(at: indexPath, animated: true)
 
         let bottomSheet = BottomSheetViewController(rootViewController: vc, outsideTouchMode: touchMode)
         present(bottomSheet, animated: true)
