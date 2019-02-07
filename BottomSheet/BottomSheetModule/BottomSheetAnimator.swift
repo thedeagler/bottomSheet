@@ -26,7 +26,7 @@ class BottomSheetPresentationAnimator: NSObject, UIViewControllerAnimatedTransit
         toViewController.view.transform = .init(translationX: 0, y:containerView.bounds.height)
         containerView.addSubview(toViewController.view)
 
-        UIView.animate(withDuration: animationDuration, animations: {
+        UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             toViewController.view.transform = .identity
         }) { finished in
             transitionContext.completeTransition(finished)

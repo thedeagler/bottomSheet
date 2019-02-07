@@ -88,17 +88,23 @@ class BottomSheetViewController: UIViewController {
         }
 
         let newYPos = positions[indexOfNewPosition]
+        let newFrameWithBuffer = CGRect(x: view.frame.minX,
+                                        y: newYPos,
+                                        width: view.frame.width,
+                                        height: viewHeight + 100) // Adding buffer for spring animation
         let newFrame = CGRect(x: view.frame.minX,
-                              y: newYPos,
-                              width: view.frame.width,
-                              height: viewHeight)
+                                        y: newYPos,
+                                        width: view.frame.width,
+                                        height: viewHeight)
 
         if newYPos == yBottom {
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                view.frame = newFrameWithBuffer
+            }) { _ in
                 view.frame = newFrame
-            })
+            }
         }
     }
 
