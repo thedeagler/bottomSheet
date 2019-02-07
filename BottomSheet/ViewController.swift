@@ -84,27 +84,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let touchMode: BottomSheetOutsideTouchMode
-        let vc: UIViewController
+        let vc = DopeViewController()
 
         switch indexPath.row {
         case 0:
-            let dvc = DopeViewController()
-            vc = UINavigationController(rootViewController: dvc)
             touchMode = .dismiss(animated: true)
 
         case 1:
-            let dvc = DopeViewController()
-            vc = UINavigationController(rootViewController: dvc)
             touchMode = .dismiss(animated: false)
 
         case 2:
-            let dvc = DopeViewController()
-            vc = UINavigationController(rootViewController: dvc)
             touchMode = .interact
 
         case 3:
-            let dvc = DopeViewController()
-            vc = UINavigationController(rootViewController: dvc)
             touchMode = .none
 
         default:

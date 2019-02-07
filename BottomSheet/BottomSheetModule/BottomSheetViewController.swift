@@ -10,7 +10,7 @@ import UIKit
 
 class BottomSheetViewController: UIViewController {
 
-    let rootViewController: UIViewController
+    let rootViewController: UINavigationController
 
     let fullMinY: CGFloat = 20
     let compactMinY: CGFloat = UIScreen.main.bounds.height - 250
@@ -26,7 +26,7 @@ class BottomSheetViewController: UIViewController {
     @IBOutlet weak var handleView: UIView!
 
     init(rootViewController: UIViewController, outsideTouchMode: BottomSheetOutsideTouchMode) {
-        self.rootViewController = rootViewController
+        self.rootViewController = UINavigationController(rootViewController: rootViewController)
         self.outsideTouchMode = outsideTouchMode
         self.bottomSheetTransitioningDelegate =  BottomSheetTransitionDelegate(outsideTouchMode: outsideTouchMode)
 
@@ -93,12 +93,12 @@ class BottomSheetViewController: UIViewController {
                               width: view.frame.width,
                               height: viewHeight)
 
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-            view.frame = newFrame
-        }) { _ in
-            if newYPos == yBottom {
-                self.presentingViewController?.dismiss(animated: false, completion: nil)
-            }
+        if newYPos == yBottom {
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                view.frame = newFrame
+            })
         }
     }
 
@@ -114,12 +114,16 @@ class BottomSheetViewController: UIViewController {
         addChild(rootViewController)
         rootViewController.didMove(toParent: self)
         containerView.addSubview(rootViewController.view)
-        containerView.backgroundColor = rootViewController.view.backgroundColor
+        containerView.backgroundColor = rootViewController.topViewController?.view.backgroundColor
 
         containerView.layer.cornerRadius = 12
         handleView.layer.cornerRadius = 2
 
         rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        rootViewController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        rootViewController.navigationBar.shadowImage = UIImage()
+        rootViewController.navigationBar.isTranslucent = true
 
         rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
         rootViewController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
