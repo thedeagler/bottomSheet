@@ -22,7 +22,7 @@ class BottomSheetViewController: UIViewController {
         return UIScreen.main.bounds.height - snapPositions.min()!
     }
 
-    private var defaultMinY: CGFloat = UIScreen.main.bounds.height - 250
+    private let defaultMinY: CGFloat = UIScreen.main.bounds.height - 250
 
     init(rootViewController: UIViewController & BottomSheetPresentable, outsideTouchMode: BottomSheetOutsideTouchMode) {
         hostedNavigationController = UINavigationController(rootViewController: rootViewController)
@@ -37,11 +37,6 @@ class BottomSheetViewController: UIViewController {
         modalPresentationStyle = .custom
     }
 
-    /// Also must respond to pops
-    func push(viewController: UIViewController & BottomSheetPresentable) {
-
-    }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,6 +45,16 @@ class BottomSheetViewController: UIViewController {
         super.viewDidLoad()
         setupGestures()
         setupViews()
+    }
+
+
+    /// Updates the list of snap positions which the view may jump to on resizing as well as moves the view to the
+    /// nearest snap position.
+    ///
+    /// - Parameter snapPositions: The new valid snapping positions
+    func update(snapPositions: [CGFloat]) {
+        self.snapPositions = snapPositions
+        snap(to: snapPositions, with: 0)
     }
 
     private var initialFrame: CGRect!
@@ -71,9 +76,10 @@ class BottomSheetViewController: UIViewController {
         }
     }
 
-    let thresholdSpeed: CGFloat = 150
+    /// The minimum speed required to snap to the position in the direction of the velocity, rather than nearest.
+    private let thresholdSpeed: CGFloat = 150
 
-    func snap(to notches: [CGFloat], with velocity: CGFloat) {
+    private func snap(to notches: [CGFloat], with velocity: CGFloat) {
         let yBottom = view.frame.maxY
         let yPos = view.frame.minY
         var positions = [yBottom]
@@ -148,7 +154,7 @@ class BottomSheetViewController: UIViewController {
         addShadow(to: containerView)
     }
 
-    func addShadow(to view: UIView) {
+    private func addShadow(to view: UIView) {
         view.layer.masksToBounds = false
         view.layer.shadowColor = UIColor.lightGray.cgColor
         view.layer.shadowOpacity = 0.5
@@ -156,11 +162,6 @@ class BottomSheetViewController: UIViewController {
         view.layer.shadowRadius = 4
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = UIScreen.main.scale
-    }
-
-    func update(snapPositions: [CGFloat]) {
-        self.snapPositions = snapPositions
-        snap(to: snapPositions, with: 0)
     }
 }
 
