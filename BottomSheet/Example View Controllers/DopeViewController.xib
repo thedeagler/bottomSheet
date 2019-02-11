@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DopeViewController" customModule="BottomSheet" customModuleProvider="target">
             <connections>
+                <outlet property="colorBox" destination="uJX-ui-1tX" id="Rnj-OG-f7u"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -41,15 +42,34 @@
                         <action selector="listButtonAction:" destination="-1" eventType="touchUpInside" id="lqx-9b-4b7"/>
                     </connections>
                 </button>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uJX-ui-1tX">
+                    <rect key="frame" x="67.5" y="132" width="240" height="128"/>
+                    <color key="backgroundColor" red="0.88235294119999996" green="0.96470588239999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="R0I-A6-7c5"/>
+                        <constraint firstAttribute="height" constant="128" id="Ymp-tL-RwJ"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRm-2S-NaK">
+                    <rect key="frame" x="168.5" y="98" width="38" height="30"/>
+                    <state key="normal" title="Show"/>
+                    <connections>
+                        <action selector="showAction:" destination="-1" eventType="touchUpInside" id="n47-Jm-GtT"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="uJX-ui-1tX" firstAttribute="top" secondItem="BRm-2S-NaK" secondAttribute="bottom" constant="4" id="2Tc-q3-NzE"/>
                 <constraint firstItem="gGz-ak-2m7" firstAttribute="leading" secondItem="rfK-MZ-odG" secondAttribute="trailing" constant="40" id="5ji-VX-BB3"/>
                 <constraint firstItem="n1T-eB-cng" firstAttribute="leading" secondItem="gGz-ak-2m7" secondAttribute="trailing" constant="40" id="8DZ-PI-Olh"/>
+                <constraint firstItem="BRm-2S-NaK" firstAttribute="top" secondItem="n1T-eB-cng" secondAttribute="bottom" constant="28" id="9E7-hF-2aZ"/>
+                <constraint firstItem="BRm-2S-NaK" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="EOc-gm-hlX"/>
                 <constraint firstItem="rfK-MZ-odG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="RLH-bF-PhC"/>
                 <constraint firstItem="rfK-MZ-odG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="lPd-st-exT"/>
                 <constraint firstItem="gGz-ak-2m7" firstAttribute="centerY" secondItem="rfK-MZ-odG" secondAttribute="centerY" id="rT3-hP-Z88"/>
                 <constraint firstItem="gGz-ak-2m7" firstAttribute="centerY" secondItem="n1T-eB-cng" secondAttribute="centerY" id="xqN-Op-YDp"/>
+                <constraint firstItem="uJX-ui-1tX" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="ydI-MO-LzV"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

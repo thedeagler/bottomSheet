@@ -166,7 +166,6 @@ class BottomSheetViewController: UIViewController {
 
 extension BottomSheetViewController: UIGestureRecognizerDelegate {
 
-    // Solution
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let bottomSheetPan = gestureRecognizer as? UIPanGestureRecognizer,
             let otherPan = otherGestureRecognizer as? UIPanGestureRecognizer,
@@ -199,7 +198,7 @@ extension BottomSheetViewController: UINavigationControllerDelegate {
 }
 
 extension BottomSheetViewController: BottomSheetDelegate {
-    func view(_ view: UIView, willResizeTo newSize: CGSize) {
-        // need to update snap state probably?
+    func view(_ view: UIView, shouldUpdate snapPositions: [CGFloat]) {
+        update(snapPositions: snapPositions)
     }
 }

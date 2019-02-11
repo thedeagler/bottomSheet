@@ -38,6 +38,14 @@ class DopeViewController: UIViewController, BottomSheetPresentable {
         dismiss()
     }
 
+    @IBAction func showAction(_ sender: UIButton) {
+        colorBox.isHidden = !colorBox.isHidden
+        let compactHeight: CGFloat = colorBox.isHidden ? 250 : 450
+        delegate?.view(view, shouldUpdate: [20, UIScreen.main.bounds.height - compactHeight])
+    }
+
+    @IBOutlet weak var colorBox: UIView!
+
     @objc
     func handleDismissTap(_ sender: UIBarButtonItem) {
         dismiss()

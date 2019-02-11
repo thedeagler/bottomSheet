@@ -16,8 +16,6 @@ protocol BottomSheetPresentable: class {
 }
 
 protocol BottomSheetDelegate: class {
-    /// Notifies the bottom sheet of an impending size change.
-    func view(_ view: UIView, willResizeTo newSize: CGSize)
-
-    // Maybe something here to update snap states instead?
+    /// Notifies the delegate that it should update its snap positions. May be used to suggest a resize because of a content change. Will snap to the nearest position.
+    func view(_ view: UIView, shouldUpdate snapPositions: [CGFloat])
 }
