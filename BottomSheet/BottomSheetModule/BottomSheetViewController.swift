@@ -10,8 +10,8 @@ import UIKit
 
 class BottomSheetViewController: UIViewController {
 
-    let hostedNavigationController: UINavigationController
-    private let snapPositions: [CGFloat]
+    private let hostedNavigationController: UINavigationController
+    private var snapPositions: [CGFloat]
     private let outsideTouchMode: BottomSheetOutsideTouchMode
     private let bottomSheetTransitioningDelegate: BottomSheetTransitionDelegate
 
@@ -32,8 +32,14 @@ class BottomSheetViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
+        hostedNavigationController.delegate = self
         transitioningDelegate = bottomSheetTransitioningDelegate
         modalPresentationStyle = .custom
+    }
+
+    /// Also must respond to pops
+    func push(viewController: UIViewController & BottomSheetPresentable) {
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -61,13 +67,13 @@ class BottomSheetViewController: UIViewController {
                                 height: maxViewHeight)
 
         default:
-            snap(view, to: snapPositions, with: recognizer.velocity(in: view).y)
+            snap(to: snapPositions, with: recognizer.velocity(in: view).y)
         }
     }
 
     let thresholdSpeed: CGFloat = 150
 
-    func snap(_ view: UIView, to notches: [CGFloat], with velocity: CGFloat, onSnapToBottom: (() -> Void)? = nil) {
+    func snap(to notches: [CGFloat], with velocity: CGFloat) {
         let yBottom = view.frame.maxY
         let yPos = view.frame.minY
         var positions = [yBottom]
@@ -101,9 +107,9 @@ class BottomSheetViewController: UIViewController {
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
             UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                view.frame = newFrameWithBuffer
+                self.view.frame = newFrameWithBuffer
             }) { _ in
-                view.frame = newFrame
+                self.view.frame = newFrame
             }
         }
     }
@@ -152,6 +158,11 @@ class BottomSheetViewController: UIViewController {
         view.layer.shouldRasterize = true
         view.layer.rasterizationScale = UIScreen.main.scale
     }
+
+    func update(snapPositions: [CGFloat]) {
+        self.snapPositions = snapPositions
+        snap(to: snapPositions, with: 0)
+    }
 }
 
 extension BottomSheetViewController: UIGestureRecognizerDelegate {
@@ -179,19 +190,16 @@ extension BottomSheetViewController: UIGestureRecognizerDelegate {
 
 }
 extension BottomSheetViewController: UINavigationControllerDelegate {
-
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if let viewController = viewController as? BottomSheetPresentable {
+            update(snapPositions: viewController.snapPositions)
+            viewController.delegate = self
+        }
+    }
 }
 
-protocol BottomSheetDisplayable: class {
-    /// The height of the view it first appears in the bottom sheet.
-    var initialHeight: CGFloat { get }
-
-    /// The minY positions that the view may snap to when the user resizes the bottom sheet.
-    var snapPositions: [CGFloat] { get }
-
-    var delegate: BottomSheetResizeable? { get set }
-}
-
-protocol BottomSheetResizeable: class {
-    func view(_ view: UIView, willResizeTo height: CGFloat)
+extension BottomSheetViewController: BottomSheetDelegate {
+    func view(_ view: UIView, willResizeTo newSize: CGSize) {
+        // need to update snap state probably?
+    }
 }

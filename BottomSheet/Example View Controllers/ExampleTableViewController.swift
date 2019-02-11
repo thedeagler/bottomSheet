@@ -8,7 +8,10 @@
 
 import UIKit
 
-class ExampleTableViewController: UITableViewController {
+class ExampleTableViewController: UITableViewController, BottomSheetPresentable {
+
+    weak var delegate: BottomSheetDelegate?
+    var snapPositions: [CGFloat] = [20, UIScreen.main.bounds.height - 400]
         
     override func viewDidLoad() {
         super.viewDidLoad()

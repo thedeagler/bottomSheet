@@ -8,7 +8,10 @@
 
 import UIKit
 
-class DopeViewController: UIViewController {
+class DopeViewController: UIViewController, BottomSheetPresentable {
+
+    weak var delegate: BottomSheetDelegate?
+    var snapPositions: [CGFloat] = [20, UIScreen.main.bounds.height - 250]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +45,5 @@ class DopeViewController: UIViewController {
 
     func dismiss() {
         presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-}
-
-extension DopeViewController: BottomSheetPresentable {
-    var snapPositions: [CGFloat] {
-        return [20, UIScreen.main.bounds.height - 250]
     }
 }
