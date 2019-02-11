@@ -143,7 +143,7 @@ class BottomSheetViewController: UIViewController {
 
         view.frame = CGRect(x: view.frame.minX,
                             y: snapPositions.max()!,
-                            width: view.frame.width,
+                            width: UIScreen.main.bounds.width,
                             height: maxViewHeight)
 
         addShadow(to: containerView)

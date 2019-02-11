@@ -17,7 +17,7 @@ class DopeViewController: UIViewController, BottomSheetPresentable {
         super.viewDidLoad()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(DopeViewController.handleDismissTap(_:)))
-        navigationItem.title = "Title"
+        navigationItem.title = "Dope"
     }
 
     @IBAction func listButtonAction(_ sender: Any) {
