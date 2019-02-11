@@ -10,25 +10,25 @@ import UIKit
 
 class BottomSheetViewController: UIViewController {
 
-    let rootViewController: UINavigationController
-
-    let fullMinY: CGFloat = 20
-    let compactMinY: CGFloat = UIScreen.main.bounds.height - 250
-
-    var viewHeight: CGFloat {
-        return UIScreen.main.bounds.height - fullMinY
-    }
-
+    let hostedNavigationController: UINavigationController
+    private let snapPositions: [CGFloat]
     private let outsideTouchMode: BottomSheetOutsideTouchMode
     private let bottomSheetTransitioningDelegate: BottomSheetTransitionDelegate
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var handleView: UIView!
 
-    init(rootViewController: UIViewController, outsideTouchMode: BottomSheetOutsideTouchMode) {
-        self.rootViewController = UINavigationController(rootViewController: rootViewController)
+    private var maxViewHeight: CGFloat {
+        return UIScreen.main.bounds.height - snapPositions.min()!
+    }
+
+    private var defaultMinY: CGFloat = UIScreen.main.bounds.height - 250
+
+    init(rootViewController: UIViewController & BottomSheetPresentable, outsideTouchMode: BottomSheetOutsideTouchMode) {
+        hostedNavigationController = UINavigationController(rootViewController: rootViewController)
         self.outsideTouchMode = outsideTouchMode
         self.bottomSheetTransitioningDelegate =  BottomSheetTransitionDelegate(outsideTouchMode: outsideTouchMode)
+        self.snapPositions = rootViewController.snapPositions.isEmpty ? [defaultMinY] : rootViewController.snapPositions
 
         super.init(nibName: nil, bundle: nil)
 
@@ -56,12 +56,12 @@ class BottomSheetViewController: UIViewController {
 
         case .changed:
             view.frame = CGRect(x: initialFrame.minX,
-                                y: max(initialFrame.minY + recognizer.translation(in: view).y, fullMinY),
+                                y: max(initialFrame.minY + recognizer.translation(in: view).y, snapPositions.min()!),
                                 width: initialFrame.width,
-                                height: viewHeight)
+                                height: maxViewHeight)
 
         default:
-            snap(view, to: [fullMinY, compactMinY], with: recognizer.velocity(in: view).y)
+            snap(view, to: snapPositions, with: recognizer.velocity(in: view).y)
         }
     }
 
@@ -91,11 +91,11 @@ class BottomSheetViewController: UIViewController {
         let newFrameWithBuffer = CGRect(x: view.frame.minX,
                                         y: newYPos,
                                         width: view.frame.width,
-                                        height: viewHeight + 100) // Adding buffer for spring animation
+                                        height: maxViewHeight + 100) // Adding buffer for spring animation
         let newFrame = CGRect(x: view.frame.minX,
                                         y: newYPos,
                                         width: view.frame.width,
-                                        height: viewHeight)
+                                        height: maxViewHeight)
 
         if newYPos == yBottom {
             self.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -117,28 +117,28 @@ class BottomSheetViewController: UIViewController {
     }
 
     private func setupViews() {
-        addChild(rootViewController)
-        rootViewController.didMove(toParent: self)
-        containerView.addSubview(rootViewController.view)
-        containerView.backgroundColor = rootViewController.topViewController?.view.backgroundColor
+        addChild(hostedNavigationController)
+        hostedNavigationController.didMove(toParent: self)
+        containerView.addSubview(hostedNavigationController.view)
+        containerView.backgroundColor = hostedNavigationController.topViewController?.view.backgroundColor
 
         containerView.layer.cornerRadius = 12
         handleView.layer.cornerRadius = 2
 
-        rootViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostedNavigationController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        rootViewController.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        rootViewController.navigationBar.shadowImage = UIImage()
-        rootViewController.navigationBar.isTranslucent = true
+        hostedNavigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        hostedNavigationController.navigationBar.shadowImage = UIImage()
+        hostedNavigationController.navigationBar.isTranslucent = true
 
-        rootViewController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
-        rootViewController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        rootViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        hostedNavigationController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
+        hostedNavigationController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
+        hostedNavigationController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
 
         view.frame = CGRect(x: view.frame.minX,
-                            y: compactMinY,
+                            y: snapPositions.max()!,
                             width: view.frame.width,
-                            height: viewHeight)
+                            height: maxViewHeight)
 
         addShadow(to: containerView)
     }
@@ -168,13 +168,30 @@ extension BottomSheetViewController: UIGestureRecognizerDelegate {
 //            tableView.isScrollEnabled = true
 //        }
 
-        if y == fullMinY {
-
-        } else {
-
-        }
+//        if y == fullMinY {
+//
+//        } else {
+//
+//        }
 
         return true
     }
 
+}
+extension BottomSheetViewController: UINavigationControllerDelegate {
+
+}
+
+protocol BottomSheetDisplayable: class {
+    /// The height of the view it first appears in the bottom sheet.
+    var initialHeight: CGFloat { get }
+
+    /// The minY positions that the view may snap to when the user resizes the bottom sheet.
+    var snapPositions: [CGFloat] { get }
+
+    var delegate: BottomSheetResizeable? { get set }
+}
+
+protocol BottomSheetResizeable: class {
+    func view(_ view: UIView, willResizeTo height: CGFloat)
 }

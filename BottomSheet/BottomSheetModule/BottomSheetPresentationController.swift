@@ -27,7 +27,7 @@ class BottomSheetPresentationController: UIPresentationController {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
 
-    func makeDimmingView(animated: Bool) -> UIView {
+    private func makeDimmingView(animated: Bool) -> UIView {
         let view = UIView(frame: containerView!.bounds)
         view.backgroundColor = UIColor.black
         view.alpha = 0

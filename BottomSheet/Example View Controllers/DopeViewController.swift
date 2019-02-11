@@ -44,3 +44,9 @@ class DopeViewController: UIViewController {
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
+
+extension DopeViewController: BottomSheetPresentable {
+    var snapPositions: [CGFloat] {
+        return [20, UIScreen.main.bounds.height - 250]
+    }
+}

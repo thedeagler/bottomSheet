@@ -22,6 +22,7 @@
 		DC4FD57F2208E91000D2757D /* TouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4FD57E2208E91000D2757D /* TouchForwardingView.swift */; };
 		DC5B365D220B87E6005E4002 /* ExampleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5B365B220B87E6005E4002 /* ExampleTableViewController.swift */; };
 		DC5B365E220B87E6005E4002 /* ExampleTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5B365C220B87E6005E4002 /* ExampleTableViewController.xib */; };
+		DC5B36602211F6B2005E4002 /* BottomSheetPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5B365F2211F6B2005E4002 /* BottomSheetPresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		DC4FD57E2208E91000D2757D /* TouchForwardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchForwardingView.swift; sourceTree = "<group>"; };
 		DC5B365B220B87E6005E4002 /* ExampleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTableViewController.swift; sourceTree = "<group>"; };
 		DC5B365C220B87E6005E4002 /* ExampleTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExampleTableViewController.xib; sourceTree = "<group>"; };
+		DC5B365F2211F6B2005E4002 /* BottomSheetPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		DC4FD5512208D11C00D2757D = {
 			isa = PBXGroup;
 			children = (
+				DC5B365F2211F6B2005E4002 /* BottomSheetPresentable.swift */,
 				DC4FD55C2208D11C00D2757D /* BottomSheet */,
 				DC4FD55B2208D11C00D2757D /* Products */,
 			);
@@ -190,6 +193,7 @@
 				DC4FD55E2208D11C00D2757D /* AppDelegate.swift in Sources */,
 				DC4FD5752208DB0800D2757D /* BottomSheetAnimator.swift in Sources */,
 				DC4FD57F2208E91000D2757D /* TouchForwardingView.swift in Sources */,
+				DC5B36602211F6B2005E4002 /* BottomSheetPresentable.swift in Sources */,
 				DC5B365D220B87E6005E4002 /* ExampleTableViewController.swift in Sources */,
 				DC4FD57A2208E0DC00D2757D /* DopeViewController.swift in Sources */,
 				DC4FD5772208DE3300D2757D /* BottomSheetPresentationController.swift in Sources */,
