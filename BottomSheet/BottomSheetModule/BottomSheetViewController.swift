@@ -133,9 +133,8 @@ class BottomSheetViewController: UIViewController {
 
         hostedNavigationController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        hostedNavigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
         hostedNavigationController.navigationBar.shadowImage = UIImage()
-        hostedNavigationController.navigationBar.isTranslucent = true
+        hostedNavigationController.navigationBar.isTranslucent = false
 
         hostedNavigationController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
         hostedNavigationController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
@@ -169,23 +168,24 @@ extension BottomSheetViewController: UIGestureRecognizerDelegate {
 
     // Solution
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
-        let direction = gesture.velocity(in: view).y
+        guard let bottomSheetPan = gestureRecognizer as? UIPanGestureRecognizer,
+            let otherPan = otherGestureRecognizer as? UIPanGestureRecognizer,
+            let otherView = otherPan.view as? UIScrollView else { return false }
+
+        let direction = bottomSheetPan.velocity(in: view).y
 
         let y = view.frame.minY
-//        if (y == fullView && tableView.contentOffset.y == 0 && direction > 0) || (y == partialView) {
-//            tableView.isScrollEnabled = false
-//        } else {
-//            tableView.isScrollEnabled = true
-//        }
+        let isSheetAtTop = y == snapPositions.min()!
+        let isScrollViewAtTop = otherView.contentOffset.y <= -otherView.contentInset.top
+        let isDirectionDown = direction > 0
 
-//        if y == fullMinY {
-//
-//        } else {
-//
-//        }
-
-        return true
+        if isSheetAtTop, (!isScrollViewAtTop || !isDirectionDown) {
+            otherView.isScrollEnabled = true
+            return false
+        } else {
+            otherView.isScrollEnabled = false
+            return true
+        }
     }
 
 }
