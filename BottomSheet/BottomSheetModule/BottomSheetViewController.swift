@@ -139,13 +139,13 @@ class BottomSheetViewController: UIViewController {
 
         hostedNavigationController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        hostedNavigationController.navigationBar.shadowImage = UIImage()
+//        hostedNavigationController.navigationBar.shadowImage = UIImage()
         hostedNavigationController.navigationBar.isTranslucent = false
 
         hostedNavigationController.view.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: 6).isActive = true
         hostedNavigationController.view.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
         hostedNavigationController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-
+        view.bottomAnchor.constraint(equalTo: view.superview!.bottomAnchor).isActive = true
         view.frame = CGRect(x: view.frame.minX,
                             y: snapPositions.max()!,
                             width: UIScreen.main.bounds.width,
